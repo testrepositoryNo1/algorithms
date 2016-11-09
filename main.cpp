@@ -2,18 +2,6 @@
 
 using namespace std;
 
-
-int bin_search(int a[], int v, int l, int r)
-{
-  while ((r - l) >= 1 ) {
-     int m = (l + r) / 2;
-     if (v == a[m]) return m;
-     if (v < a[m]) r = m - 1; else l = m + 1;
-    }
-  return -1;
-}
-
-
 template <typename T, typename  Type>
 int bin_search_containers(T container, Type _value)
 {
@@ -27,9 +15,11 @@ int bin_search_containers(T container, Type _value)
      /*
      * для такого случия vector<int> vec{1, 1, 1, 3, 6, 8, 8, 10, 10, 12};
      * бывают колизии и цикл продолжается бесконечно, вот по этому и нужна
-     * проверка  'f(r > l)'
+     * проверка  'f(r > l)',  исправлен баг 'if(r >= l)'
+     * ***--- например если _value = 13 и vec.size() >= 60
+     * на экран выводит "13 not founded" ---***
      */
-        if(r > l) {
+        if(r >= l) {
             if (_value == container.at(middle)) {
                 return middle;
               }
@@ -54,44 +44,28 @@ int main()
 
       my_boost_int_Rnd rnd;
       vector<int> vec;
-      //int a[10];
 
-      for (int var = 0; var < 25; ++var) {
-          vec.push_back(rnd.int_boost_rnd(1, 20));
+      for (int i = 0; i < 250; ++i) {
+          vec.push_back(i);
           //a[var] = rnd.int_boost_rnd(1, 15);
         }
 
-      //sort(begin(a), end(a));
-      sort(vec.begin(), vec.end());
+      //sort(vec.begin(), vec.end());
 
 
-      for (auto j : vec)
+      /*for (auto j : vec)
               cout << j << " ";
-      cout << endl;
-      int s = rnd.int_boost_rnd(1,15);
-      int x = bin_search_containers(vec, s);
-
-      if(x < 0)
-        cout << s << " not founded" << endl;
-      else
-        cout << s << " at a[" << x << "]" << endl;
-
-
-/*
-         for (auto j : a)
-        cout << j << " ";
-      cout << endl;
+      cout << endl;*/
 
       int s = rnd.int_boost_rnd(1,15);
-
-      int x = bin_search(a, s, 0, 10);
+      int x = bin_search_containers(vec, 13);
 
       if(x < 0)
-        cout << s << " not founded" << endl;
+        cout << 13 << " not founded" << endl;
       else
-        cout  << s << " at a[" << x << "]" << endl;
+        cout << 13 << " at a[" << x << "]" << endl;
 
-*/
+
 
 //---------------------------------------------------------------
       boost::chrono::milliseconds end(clock());
