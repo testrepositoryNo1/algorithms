@@ -53,6 +53,15 @@ int bin_search_containers(T container, Type _value)
     return -1;
 }
 
+/*
+* for qsort(vec.data(), vec.size(), sizeof(int), compare);
+*/
+int compare (const void * a, const void * b)
+{
+  return ( *(int*)a - *(int*)b );
+}
+
+
 int main()
 {
       boost::chrono::milliseconds start(clock());
@@ -61,20 +70,19 @@ int main()
       my_boost_int_Rnd rnd;
       vector<int> vec;
 
-      for (int i = 0; i < 10000000; ++i) {
-          vec.push_back(i);
+      for (int i = 0; i < 100000; ++i) {
+          vec.push_back(rnd.int_boost_rnd());
           //a[var] = rnd.int_boost_rnd(1, 15);
             }
 
-
-      //sort(vec.begin(), vec.end());
+      qsort(vec.data(), vec.size(), sizeof(int), compare);
 
 
       /*for (auto j : vec)
               cout << j << " ";
       cout << endl;*/
 
-      for(size_t i = 0; i < 5; ++i) {
+//      for(size_t i = 0; i < 5; ++i) {
       int s = rnd.int_boost_rnd(1, 1000);
           int x = bin_search_containers(vec, s);
 
@@ -85,7 +93,7 @@ int main()
 
           cout << "count of comparisons: " << counter << endl;
           counter = 0;
-        }
+//        }
 
 //---------------------------------------------------------------
       boost::chrono::milliseconds end(clock());

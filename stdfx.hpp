@@ -2,7 +2,8 @@
 #define STDFX_HPP
 
 #include <iostream>
-#include <fstream>
+//#include <fstream>
+#include <stdlib.h>
 
 //#include <iomanip>
 //#include <stdio.h>
