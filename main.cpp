@@ -2,15 +2,24 @@
 
 using namespace std;
 
+/*
+*
+* template function of binart search tree (BST) for containers
+*
+*/
+static size_t counter = 0;  // count of comparisons
+
 template <typename T, typename  Type>
 int bin_search_containers(T container, Type _value)
 {
     Type l = 0;
     Type r = container.size();
-    int middle = (l + r) / 2;
+    Type middle = (l + r) / 2;
+
 
     while ( middle >= 1 ) {
         middle = (l + r) / 2;
+        ++counter;
 
      /*
      * bug no 1: для такого случия vector<int> vec{1, 1, 1, 3, 6, 8, 8, 10, 10, 12};
@@ -52,10 +61,11 @@ int main()
       my_boost_int_Rnd rnd;
       vector<int> vec;
 
-      for (int i = 0; i < 10; ++i) {
+      for (int i = 0; i < 10000000; ++i) {
           vec.push_back(i);
           //a[var] = rnd.int_boost_rnd(1, 15);
-        }
+            }
+
 
       //sort(vec.begin(), vec.end());
 
@@ -64,8 +74,8 @@ int main()
               cout << j << " ";
       cout << endl;*/
 
-
-      int s = 11; // rnd.int_boost_rnd(1, 250);
+      for(size_t i = 0; i < 5; ++i) {
+      int s = rnd.int_boost_rnd(1, 1000);
           int x = bin_search_containers(vec, s);
 
           if(x < 0)
@@ -73,7 +83,9 @@ int main()
           else
             cout << s << " at a[" << x << "]" << endl;
 
-
+          cout << "count of comparisons: " << counter << endl;
+          counter = 0;
+        }
 
 //---------------------------------------------------------------
       boost::chrono::milliseconds end(clock());
