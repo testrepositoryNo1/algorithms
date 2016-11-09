@@ -18,16 +18,17 @@
 #include <functional>
 #include <string>
 #include <utility>
-#include <list>
+//#include <list>
 //#include <complex>
 #include <set>
 
 #include <memory>
-#include <thread>
+//#include <thread>
 
 #include <unistd.h>
 #include <boost/chrono.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
+#include <boost/sort/spreadsort/spreadsort.hpp>
 
 #endif // STDFX_HPP

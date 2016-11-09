@@ -60,6 +60,7 @@ int compare (const void * a, const void * b)
 {
   return ( *(int*)a - *(int*)b );
 }
+#define DATA_TYPE boost::int64_t
 
 
 int main()
@@ -70,12 +71,15 @@ int main()
       my_boost_int_Rnd rnd;
       vector<int> vec;
 
-      for (int i = 0; i < 100000; ++i) {
+      for (int i = 0; i < 1000000; ++i) {
           vec.push_back(rnd.int_boost_rnd());
           //a[var] = rnd.int_boost_rnd(1, 15);
             }
 
-      qsort(vec.data(), vec.size(), sizeof(int), compare);
+
+      //sort(vec.begin(), vec.end());
+      //qsort(vec.data(), vec.size(), sizeof(int), compare);
+      boost::sort::spreadsort::spreadsort(vec.begin(), vec.end());
 
 
       /*for (auto j : vec)
