@@ -98,5 +98,47 @@ int compare (const void * a, const void * b)
   return ( *(int*)a - *(int*)b );
 }
 
+/*
+*
+* STACK:
+*
+*/
+/*
+template <typename T>
+class Stack
+{
+private:
+    vector<T> elems; // Элементы
+public:
+    void push(T const&);
+    void pop();
+    T top() const;
+    bool empty() const { return elems.empty(); }
+};
+
+template <typename T>
+void Stack<T>::push(T const& elem)
+{
+    elems.push_back(elem) ; // Добавление в стек копии передаваемого элемента
+}
+
+template <typename T>
+void Stack<T>::pop()
+{
+    if (elems.empty()) {
+        throw out_of_range(" Stack< >: : pop () : "" empty stack");
+      }
+    elems.pop_back() ; // Удаление последнего элемента
+}
+
+template <typename T>
+T Stack<T>::top() const
+{
+    if (elems.empty()) {
+        throw out_of_range(" Stack< >: : top () :"" empty stack");
+      }
+    return elems.back(); // Возврат копии последнего элемента
+}
+*/
 
 #endif // MAIN_HPP

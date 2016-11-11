@@ -13,22 +13,24 @@
 //#include <chrono>
 
 #include <vector>
+//#include <stack>
+//#include <queue>
+//#include <list>
 #include <algorithm>
 #include <iterator>
 #include <functional>
 #include <string>
 #include <utility>
-//#include <list>
 //#include <complex>
-#include <set>
+//#include <set>
 
 #include <memory>
 //#include <thread>
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <boost/chrono.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <boost/sort/spreadsort/spreadsort.hpp>
+//#include <boost/sort/spreadsort/spreadsort.hpp>
 
 #endif // STDFX_HPP
