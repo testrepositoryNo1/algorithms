@@ -5,7 +5,7 @@
 //#include <fstream>
 #include <stdlib.h>
 
-//#include <iomanip>
+#include <iomanip>
 //#include <stdio.h>
 
 //#include <ctime>
@@ -25,9 +25,10 @@
 //#include <set>
 
 #include <memory>
-//#include <thread>
+#include <thread>
 
 //#include <unistd.h>
+#include <boost/type_index.hpp>
 #include <boost/chrono.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>

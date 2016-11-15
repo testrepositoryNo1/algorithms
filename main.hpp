@@ -90,6 +90,35 @@ int bin_search_containers(T container, Type _value)
     return -1;
 }
 
+
+
+/*
+*
+* Предполагается что в эту функцию передается предварительно отсортированный
+* масив(вектор): [1...N + 1] (или любая другая последовательность чисел
+* например [i,(i+1),(i+2)...(N + 1)]), в котором не хватает одного числа,
+* функция находит данное число и выводит его на экран.
+*
+*/
+int find_not_exist_var(std::vector<int> vec)
+{
+    int not_exist = -1;
+    int l = 0;
+    int r = vec.size() + 1;
+    int middle = (l + r) / 2;
+
+    while((r - l) >= 2) {
+        middle = (l + r) / 2;
+        if ( vec.at(middle) != middle + vec.front() ) {
+            r = middle;
+          }
+        else {
+            l = middle;
+          }
+      }
+   return not_exist = (vec.at(l) + vec.at(r) ) / 2;
+}
+
 /*
 * for qsort(vec.data(), vec.size(), sizeof(int), compare);
 */
