@@ -19,13 +19,36 @@ void bubble_sort(vector<_Type> &v)
     for(size_t i = 0; i < v.size(); ++i) {
         for(size_t j = 0; j < v.size(); ++j) {
             /* < - сортировка по возростанию, > - сортировка по убыванию*/
-            if(v.at(i) > v.at(j)) {
+            if(v.at(i) < v.at(j)) {
                 exch(v.at(i), v.at(j));
                 ++c;
             }
         }
     }
 }
+
+template<typename  _Type>
+void insertion_sort(vector<_Type> &v)
+{
+    _Type min = v.front(), pos = 0;
+
+    for(size_t i = 0; i < v.size(); ++i) {
+        size_t j = i;
+        min = v.at(j);
+
+        while (j < v.size()) {
+            /* < - сортировка по возростанию, > - сортировка по убыванию*/
+            if (v.at(j) < min){
+                min = v.at(j);
+                pos = j;
+            }
+            ++j;
+        }
+        exch(v.at(i), v.at(pos));
+        j = 0;
+    }
+}
+
 
 void gen(vector<int> &v, size_t _size)
 {
@@ -46,8 +69,8 @@ int main ()
     vector<int> vec;
 
     gen(vec, 30);
-
-    bubble_sort(vec);
+    //sort(vec.begin(), vec.end());
+    insertion_sort(vec);
 
 
     for(auto a : vec)
@@ -55,6 +78,7 @@ int main ()
     cout << endl;
 
     cout << "c = " << c << endl;
+
 
 
 //---------------------------------------------------------------
