@@ -24,6 +24,7 @@ void bubble_sort(vector<_Type> &v)
                 ++c;
             }
         }
+        ++c;
     }
 }
 
@@ -35,7 +36,6 @@ void insertion_sort(vector<_Type> &v)
     for(size_t i = 0; i < v.size(); ++i) {
         size_t j = i;
         min = v.at(j);
-
         while (j < v.size()) {
             /* < - сортировка по возростанию, > - сортировка по убыванию*/
             if (v.at(j) < min){
@@ -43,12 +43,33 @@ void insertion_sort(vector<_Type> &v)
                 pos = j;
             }
             ++j;
+            ++c;
         }
         exch(v.at(i), v.at(pos));
         j = 0;
+        ++c;
     }
 }
 
+template<typename _Type>
+void shellsort(vector<_Type> &vec)
+{
+    size_t h = 1;
+    size_t r = vec.size();
+    size_t l = 0;
+
+    for ( ; h < (r - l) / 9; h = (3 * h) + 1);
+    for( ; h > 0; h /= 3)
+        for(size_t i = l + h; i < r; ++i) {
+            size_t j = i;
+            _Type v = vec.at(i);
+            while (j >= l + h && v < vec.at(j - h)) {
+                vec.at(j) = vec.at(j - h);
+                j -= h;
+            }
+            vec.at(j) = v;
+        }
+}
 
 void gen(vector<int> &v, size_t _size)
 {
@@ -67,19 +88,21 @@ int main ()
 //----------------------------------------------------------------
 
     vector<int> vec;
+    size_t sz = 200;
 
-    gen(vec, 30);
+    gen(vec, sz);
+    _sort(vec.begin(), vec.end());
+    //bubble_sort(vec);
+
+
+    //shellsort(vec);
     //sort(vec.begin(), vec.end());
-    insertion_sort(vec);
 
-
-    for(auto a : vec)
+    /*for (auto a : vec)
         cout << a << " ";
-    cout << endl;
+    cout << endl;*/
 
-    cout << "c = " << c << endl;
-
-
+    cout << "c = " << c <<  endl;
 
 //---------------------------------------------------------------
       boost::chrono::milliseconds end(clock());
