@@ -2,10 +2,10 @@
 #define STDFX_HPP
 
 #include <iostream>
-//#include <fstream>
-#include <stdlib.h>
+#include <fstream>
+//#include <stdlib.h>
 
-#include <iomanip>
+//#include <iomanip>
 //#include <stdio.h>
 
 //#include <ctime>
@@ -16,6 +16,7 @@
 //#include <stack>
 //#include <queue>
 //#include <list>
+//#include <map>
 #include <algorithm>
 #include <iterator>
 #include <functional>
@@ -28,10 +29,11 @@
 #include <thread>
 
 //#include <unistd.h>
-#include <boost/type_index.hpp>
+//#include <boost/type_index.hpp>
 #include <boost/chrono.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-//#include <boost/sort/spreadsort/spreadsort.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/path.hpp>
 
 #endif // STDFX_HPP

@@ -6,14 +6,16 @@ CONFIG += qt thread debug
 CONFIG += c++14
 QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg
+QMAKE_CFLAGS_DEBUG += -g
+CONFIG += qt debug
+CONFIG += -g debug
 
-LIBS += -L/path/boost/lib/ -lboost_thread -lboost_system -lboost_chrono
+
+LIBS += -L/path/boost/lib/ -lboost_thread -lboost_system -lboost_chrono -lboost_filesystem
 
 SOURCES += main.cpp
 QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += \
-    stdfx.h \
-    main.hpp \
     main.hpp \
     stdfx.hpp

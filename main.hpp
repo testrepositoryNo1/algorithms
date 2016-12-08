@@ -4,6 +4,13 @@
 
 #define DATA_TYPE boost::int64_t  /* for boost spreadsort*/
 
+void Srand()
+{
+    setlocale(0, "");
+    srand(time(0));
+    srand(rand());
+}
+
 class my_boost_int_Rnd
 {
 public:
