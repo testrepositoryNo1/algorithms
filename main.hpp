@@ -15,8 +15,6 @@ void Srand()
 class my_boost_int_Rnd
 {
 public:
-
-
   int64_t int_boost_rnd()
   {
     boost::random::mt19937 temp_gen(clock() * time(0) / rand());       /* seed */
@@ -36,6 +34,7 @@ public:
     return dist(gen);
   }
 
+
   long double double_boost_rnd()
   {
     my_boost_int_Rnd ob;
@@ -49,7 +48,7 @@ public:
 
 /*
 *
-* template function of binart search tree (BST) for containers
+* template function of binary search tree (BST) for containers
 *
 */
 static size_t counter = 0;  // count of comparisons
@@ -345,6 +344,7 @@ void quicksort(vector<Type> &v)
 /*
    merge sort algorithm for two sorted files
    algorithm will not work correctly, if source files are not sorted
+   modified (optimized and improved)
 */
 void merger(string first_file_name, string second_file_name)
 {
@@ -359,47 +359,77 @@ void merger(string first_file_name, string second_file_name)
     int a   = 0,
         b   = 0;
 
-    /* считивание из файлов */
-    while (fin1 && fin2) {
-            fin1 >> a;
-            first_part.push_back(a);
+
+    /*
+    *  bug no 1: Обязательно надо считывать файлы отделными
+    *            на случай когда файлы разной длины.
+    *            В данном случае в разных потоках, для оптимизации времени
+    */
+    thread fin_thr([&first_part, &fin1, &a]()
+    {
+            while (fin1) {
+                    fin1 >> a;
+                    first_part.push_back(a);
+                }
+        });
+
+    while (fin2) {
             fin2 >> b;
             second_part.push_back(b);
         }
 
-    first_part.pop_back();  /* без этого не обойтись */
-    second_part.pop_back(); /* без этого не обойтись */
+    fin_thr.join();
+    first_part.pop_back();  /* без этого не обойтись, удаляем лишнее */
+    second_part.pop_back(); /* без этого не обойтись, удаляем лишнее */
 
     auto iter1 = first_part.begin();
     auto iter2 = second_part.begin();
 
     /*--- realisation of algorithm ---*/
-    for
-            (size_t i = 0; i < first_part.size() * 2; ++i){
+    /*
+    *  bug no 1: всего лишь надо было понять,
+    *            что если достигли конца в одном файле,
+    *            а во втором еще есть элементы то эти элементы
+    *            из второго файла просто надо добавить в конец выходного файла
+    *            (потому как они уже отсортированы,
+    *            и больше максимального элемента первого файла)!
+    *  bug no 2: 'first_part.size() + second_part.size()' на случай когда файлы разной длины
+    */
+    for (size_t i = 0; i < first_part.size() + second_part.size(); ++i) {
             if (*iter1 <= *iter2) {
                     fout << *iter1 << "\n";
-                    //vec.push_back(*iter1); // на случай если захочется записать в массив
-                                             //   (но лучше в список)
+                    //vec.push_back(*iter1);
                     if (iter1 == first_part.end() - 1) {
-                            *iter1 = *iter2 + 1; /* без этого не обойтись ()*/
+                            while (iter2 != second_part.end()) {
+                                    fout << *iter2 << "\n";
+                                    //vec.push_back(*iter2);
+                                    ++iter2;
+                                } break;
                         }
                     else {
                             ++iter1;
                         }
                 }
-            else if (*iter1 >= *iter2) {
+            else /*if (*iter1 >= *iter2)*/ {
                     fout << *iter2 << "\n";
-                    //vec.push_back(*iter2); // на случай если захочется записать в массив
-                                             //   (но лучше в список)
+                    //vec.push_back(*iter2);
                     if (iter2 == second_part.end() - 1) {
-                            *iter2 = *iter1 + 1; /* без этого не обойтись ()*/
+                            while (iter1 != first_part.end()) {
+                                    fout << *iter1 << "\n";
+                                    //vec.push_back(*iter1);
+                                    ++iter1;
+                                } break;
                         }
                     else {
                             ++iter2;
                         }
                 }
         }
-    /*---*---*/
+    /*--- * ---*/
+
+
+
+
     fout.close();
 
     /* some boost tricks */
@@ -408,7 +438,6 @@ void merger(string first_file_name, string second_file_name)
             boost::filesystem::rename("merged_file", "merged_file_is_too_big_don't_open_it");
         }
 }
-
 
 /*
    this function generate tow files,
@@ -454,6 +483,39 @@ void big_files_generator(size_t size, int from, int to)
     thr.join();
 }
 
+void different_size_files_generator(size_t size_1, size_t size_2)
+{
+    vector<int> first_part, second_part;
+    gen(first_part, size_1, 0, 100);
+    gen(second_part, size_2, 200, 800);
+
+
+    sort(first_part.begin(), first_part.end());
+    sort(second_part.begin(), second_part.end());
+
+
+    auto iter  = first_part.begin();
+    auto iter2 = second_part.begin();
+
+    thread thr([&first_part, &iter]()
+    {
+            ofstream fout;
+            fout.open("first_part", ios::out);
+            for ( ; iter != first_part.end(); ++ iter) {
+                    fout << *iter << "\n";
+                }
+            fout.close();
+
+        });
+
+    ofstream fout;
+    fout.open("second_part", ios::out);
+    for ( ; iter2 != second_part.end(); ++ iter2) {
+            fout << *iter2 << "\n";
+        }
+
+    thr.join();
+}
 
 /*
    this function generate tow files,

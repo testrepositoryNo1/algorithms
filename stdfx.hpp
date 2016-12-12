@@ -27,6 +27,7 @@
 
 #include <memory>
 #include <thread>
+#include <mutex>
 
 //#include <unistd.h>
 //#include <boost/type_index.hpp>

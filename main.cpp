@@ -2,54 +2,82 @@
 
 using namespace std;
 
-/*
-   merge sort algorithm for two sorted files
-   algorithm will not work correctly, if source files are not sorted
-   modified (improved)
-*/
-void merger_(string first_file_name, string second_file_name)
+template<typename T>
+void Sort(vector<T> &v)
 {
-    vector<int> first_part, second_part;;
-    ifstream fin1, fin2;
-    ofstream fout("merged_file", ios::out);
+    sort(v.begin(), v.end());
+}
+
+template <typename Item>
+void merge_(Item a[], int l, int m, int r)
+{
+    int i, j;
+    static Item aux[10], b[10];
+
+  /*  for(size_t u = 0; u < 10; ++u){
+            cout << a[u] << endl;
+        }
+*/
+    //sleep(3);
 
 
-    fin1.open(first_file_name, ios::in);
-    fin2.open(second_file_name, ios::in);
-
-    int a   = 0,
-        b   = 0;
-
-    /* считивание из файлов */
-    while (fin1 && fin2) {
-            fin1 >> a;
-            first_part.push_back(a);
-            fin2 >> b;
-            second_part.push_back(b);
+    for (i = m + 1; i > l; --i) {
+            aux[i - 1] = a [i - 1];
+        }
+    for (j = m; j < r; ++j) {
+            int indx = r + m - j;
+            aux[indx] = a[j + 1];
         }
 
-    first_part.pop_back();  /* без этого не обойтись, удаляем лишнее*/
-    second_part.pop_back(); /* без этого не обойтись, удаляем лишнее */
+
+    for(size_t u = 0; u < 10; ++u){
+                cout << aux[u] << " ";
+            }
+    cout << endl;
+    sleep(3);
+
+    for (int k = l; k < r; ++k) {
+            if (aux[j] < aux[i]) {
+                b[k] = aux[j--];
+                }
+            else {
+                    b[k] = aux[i++];
+                }
+        }
+
+    for(size_t u = 0; u < 10; ++u){
+            cout << b[u] << " ";
+        }
+    cout << endl;
+
+}
+
+
+void merger(int a[], int l, int m, int r)
+{
+    vector<int> first_part, second_part;
+    vector<int> vec;
+
+    for(size_t i = 0, j = 5; i < 5; ++i, ++j) {
+            first_part.push_back(a[i]);
+            second_part.push_back(a[j]);
+        }
+
+
 
     auto iter1 = first_part.begin();
     auto iter2 = second_part.begin();
 
-    /*--- realisation of algorithm ---*/
-    for (size_t i = 0; i < first_part.size() * 2; ++i){
+    Sort(first_part);
+    Sort(second_part);
+
+
+    for (size_t i = 0; i < first_part.size() + second_part.size(); ++i) {
             if (*iter1 <= *iter2) {
-                    fout << *iter1 << "\n";
-                    //vec.push_back(*iter1);
+                    vec.push_back(*iter1);
                     if (iter1 == first_part.end() - 1) {
-                            /* всего лишь надо было понять,
-                               что если достигли конца в одном файле,
-                               а во втором еще есть элементы то эти элементы
-                               из второго файла просто надо добавить в конец выходного файла
-                               (потому как они уже отсортированы,
-                               и больше максимального элемента первого файла)!
-                             */
                             while (iter2 != second_part.end()) {
-                                    fout << *iter2 << "\n";
-                                    //vec.push_back(*iter2);
+                                    vec.push_back(*iter2);
                                     ++iter2;
                                 } break;
                         }
@@ -57,14 +85,11 @@ void merger_(string first_file_name, string second_file_name)
                             ++iter1;
                         }
                 }
-            else if (*iter1 >= *iter2) {
-                    fout << *iter2 << "\n";
-                    //vec.push_back(*iter2);
+            else  {
+                    vec.push_back(*iter2);
                     if (iter2 == second_part.end() - 1) {
-                            /* см. обяснеие выше стоящего цыкла 'while' */
                             while (iter1 != first_part.end()) {
-                                    fout << *iter1 << "\n";
-                                    //vec.push_back(*iter1);
+                                    vec.push_back(*iter1);
                                     ++iter1;
                                 } break;
                         }
@@ -73,10 +98,21 @@ void merger_(string first_file_name, string second_file_name)
                         }
                 }
         }
-    /*---*---*/
-    fout.close();
+    for (auto elem : vec)
+        cout << elem << " ";
+    cout << endl;
 }
 
+
+template <typename Item>
+void mergesort(Item a,  int l, int r)
+{
+    if (r <= 1) return;
+    int m = (r + l) / 2;
+    mergesort(a, l, m);
+    mergesort(a, m + 1, r);
+    merge_(a, l, m, r);
+}
 
 
 
@@ -86,11 +122,34 @@ int main ()
     boost::chrono::milliseconds start(clock());
 //----------------------------------------------------------------
 
-    big_files_generator(50, -50, 50);
-    string first_file_name  = "first_part",
+    int arr[10] = {50, 28, 26, 8, 49, 43, 25, 27, 56, 3};
+
+
+    //merge_(arr, 0, 5, 9);
+
+
+
+    mergesort(arr, 0, 10);
+
+    //merger(arr, 0, 5, 10);
+
+
+
+    /*for(size_t i = 0; i < 10; ++i){
+            cout << arr[i] << endl;
+        }
+*/
+
+
+
+
+    /*different_size_files_generator(500, 100);
+
+  */
+   /* string first_file_name  = "first_part",
            second_file_name = "second_part";
 
-    merger_(first_file_name, second_file_name); /* modified */
+    merger(first_file_name, second_file_name);*/ /* modified */
 
 
 //---------------------------------------------------------------
@@ -102,3 +161,5 @@ int main ()
 
 return 0;
 }
+
+
