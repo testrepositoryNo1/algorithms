@@ -2,6 +2,14 @@
 
 using namespace std;
 
+void printt(vector<int> vec)
+{
+    for (auto elem : vec) {
+            cout << elem << " ";
+        }
+    cout << endl;
+}
+
 template<typename T>
 void Sort(vector<T> &v)
 {
@@ -114,46 +122,82 @@ void mergesort(Item a,  int l, int r)
     merge_(a, l, m, r);
 }
 
+/*
+* function for priority queue SORT algotithm realisation
+*/
+vector<int>::iterator find_max(vector<int>::iterator beg, vector<int>::iterator end)
+{
+    auto iter = beg;
+    auto max = beg;
 
+    for ( ; iter != end; ++iter) {
+            if (*iter > *max) {
+                    max = iter;
+                }
+        }
+    return max;
+}
+
+/*
+* function for priority queue SORT algotithm realisation
+*/
+template <typename T>
+void iterator_swaper(T a, T b)
+{
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+/*
+* priority queue SORT algotithm realisation
+*/
+template <typename T>
+void PQ_sort(T &vec)
+{
+    for (size_t i = 0; i < vec.size(); ++i) {
+            auto max = find_max(vec.begin(), vec.end() - i);
+            auto back = (vec.end() - (i + 1));
+            iterator_swaper(max, back);
+        }
+}
 
 int main ()
 {
     Srand();
-    boost::chrono::milliseconds start(clock());
+//    boost::chrono::milliseconds start(clock());
 //----------------------------------------------------------------
 
-    int arr[10] = {50, 28, 26, 8, 49, 43, 25, 27, 56, 3};
+    vector<int> vec;// {50, 28, 26, 8, 49, 43, 25, 27, 56, 3};
+    int i = 0;
 
+    ifstream fin("test.sort", ios_base::in);
 
-    //merge_(arr, 0, 5, 9);
-
-
-
-    mergesort(arr, 0, 10);
-
-    //merger(arr, 0, 5, 10);
-
-
-
-    /*for(size_t i = 0; i < 10; ++i){
-            cout << arr[i] << endl;
+    while(fin) {
+            fin >> i;
+            vec.push_back(i);
         }
-*/
+    cout << vec.size() << endl;
+    fin.close();
+
+    boost::chrono::milliseconds start(clock());
+    PQ_sort(vec);
+    boost::chrono::milliseconds end(clock());
 
 
+    if (is_sorted(vec.begin(), vec.end())) {
+            cout << "sorted" << endl;
+            printt(vec);
+        }
+    else {
+        cout << "not sorted" << endl;
+    }
 
-
-    /*different_size_files_generator(500, 100);
-
-  */
-   /* string first_file_name  = "first_part",
-           second_file_name = "second_part";
-
-    merger(first_file_name, second_file_name);*/ /* modified */
 
 
 //---------------------------------------------------------------
-    boost::chrono::milliseconds end(clock());
+//    boost::chrono::milliseconds end(clock());
     using ms = boost::chrono::milliseconds;
     ms dur = boost::chrono::duration_cast<ms>(end - start);
     double dd = dur.count() / 1000.0;

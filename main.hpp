@@ -9,7 +9,7 @@ void Srand()
 {
     setlocale(0, "");
     srand(time(0));
-    srand(rand());
+    srand(rand() / rand());
 }
 
 class my_boost_int_Rnd
