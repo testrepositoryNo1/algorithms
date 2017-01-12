@@ -163,41 +163,49 @@ void PQ_sort(T &vec)
         }
 }
 
+
+/*
+* константы для поразрядной сортировки
+*/
+const size_t bitsword = 32;
+const size_t bitsbyte = 8;
+const size_t byteword = bitsword / bitsbyte;
+const size_t R = 1 << bitsbyte;
+
+/*
+* влечение B-ого байта из двоичного А слова
+*/
+inline int digit(long A, int B)
+{
+    return (A & (1 << B)) != 0;
+}
+
+
+
+
 int main ()
 {
     Srand();
-//    boost::chrono::milliseconds start(clock());
+    boost::chrono::milliseconds start(clock());
 //----------------------------------------------------------------
 
-    vector<int> vec;// {50, 28, 26, 8, 49, 43, 25, 27, 56, 3};
-    int i = 0;
+    vector<char> vec{'v', 'y', 'q', 'a', 'n', 'u', 'w', 'z', 'b', 'q'};
 
-    ifstream fin("test.sort", ios_base::in);
+    //bubble_sort(vec);
 
-    while(fin) {
-            fin >> i;
-            vec.push_back(i);
+
+    for(size_t i = 0; i < vec.size(); ++i) {
+            cout << vec.at(i) << " ";
+            int c = 8;
+            while(c >= 0) {
+                    cout << digit(vec.at(i), c) << " ";
+                    --c;
+                }
+            cout << endl;
         }
-    cout << vec.size() << endl;
-    fin.close();
-
-    boost::chrono::milliseconds start(clock());
-    PQ_sort(vec);
-    boost::chrono::milliseconds end(clock());
-
-
-    if (is_sorted(vec.begin(), vec.end())) {
-            cout << "sorted" << endl;
-            printt(vec);
-        }
-    else {
-        cout << "not sorted" << endl;
-    }
-
-
 
 //---------------------------------------------------------------
-//    boost::chrono::milliseconds end(clock());
+    boost::chrono::milliseconds end(clock());
     using ms = boost::chrono::milliseconds;
     ms dur = boost::chrono::duration_cast<ms>(end - start);
     double dd = dur.count() / 1000.0;
